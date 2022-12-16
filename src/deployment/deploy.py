@@ -1302,6 +1302,12 @@ def main() -> None:
         action="store_true",
         help="Enable CPU and memory profiler in dotnet Azure Function",
     )
+
+    parser.add_argument(
+        "--custom_domain",
+        action="store_true",
+        help="Use a custom domain name for your Azure Function and CLI endpoint",
+    )
     args = parser.parse_args()
 
     if shutil.which("func") is None:
