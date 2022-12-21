@@ -4,18 +4,19 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use anyhow::{bail, Result};
-use debuggable_module::{block, path::FilePath, Module, Offset};
+use debuggable_module::Module;
+pub use debuggable_module::{block, path::FilePath, Offset};
 use symbolic::debuginfo::Object;
 use symbolic::symcache::{SymCache, SymCacheConverter};
 
 use crate::allowlist::TargetAllowList;
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct BinaryCoverage {
     pub modules: BTreeMap<FilePath, ModuleBinaryCoverage>,
 }
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct ModuleBinaryCoverage {
     pub offsets: BTreeMap<Offset, Count>,
 }
@@ -71,7 +72,7 @@ pub fn find_coverage_sites<'data>(
             if let Some(file) = location.file() {
                 let path = file.full_path();
 
-                if allowlist.source_files.is_allowed(&path) {
+                if allowlist.source_files.is_allowed(path) {
                     let blocks =
                         block::sweep_region(module, &debuginfo, function.offset, function.size)?;
                     offsets.extend(blocks.iter().map(|b| b.offset));
