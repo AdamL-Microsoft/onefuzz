@@ -599,7 +599,7 @@ dependencies = [
  "log",
  "memmap2",
  "msvc-demangler",
- "pdb 0.7.0",
+ "pdb 0.8.0",
  "pete",
  "pretty_assertions",
  "procfs",
